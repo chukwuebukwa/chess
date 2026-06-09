@@ -1,7 +1,14 @@
 import type { Trainer } from '../hooks/useTrainer';
 
 export function Sidebar({ trainer }: { trainer: Trainer }) {
-  const { openingSummaries, openingId, selectOpening } = trainer;
+  const {
+    openingSummaries,
+    openingId,
+    selectOpening,
+    lineSummaries,
+    targetLeafId,
+    selectLine,
+  } = trainer;
 
   return (
     <nav className="sidebar" aria-label="Openings">
@@ -40,6 +47,29 @@ export function Sidebar({ trainer }: { trainer: Trainer }) {
                     {o.completed}/{o.total} lines
                   </span>
                 </button>
+
+                {active && lineSummaries.length > 0 && (
+                  <ul className="line-nav" aria-label={`${o.name} lines`}>
+                    {lineSummaries.map((line) => {
+                      const current = line.id === targetLeafId;
+                      return (
+                        <li key={line.id}>
+                          <button
+                            type="button"
+                            className={current ? 'line-item active' : 'line-item'}
+                            aria-current={current ? 'true' : undefined}
+                            onClick={() => selectLine(line.id)}
+                          >
+                            <span className="line-item-name">{line.name}</span>
+                            {line.completed && (
+                              <span className="done-check" aria-hidden>✓</span>
+                            )}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </li>
             );
           })}

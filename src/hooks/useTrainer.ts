@@ -206,6 +206,10 @@ export function useTrainer() {
     () => setState((s) => engine.resetLine(tree, s)),
     [tree],
   );
+  const doSelectLine = useCallback(
+    (leafId: string) => setState((s) => engine.selectLine(tree, s, leafId)),
+    [tree],
+  );
   const restart = useCallback(
     () =>
       setState((prev) =>
@@ -252,6 +256,20 @@ export function useTrainer() {
     leafIds.has(id),
   );
 
+  // One entry per drillable line in the active opening, in queue order, so the
+  // sidebar can offer a direct pick (name, whether it's done, whether it's the
+  // line currently being drilled).
+  const lineSummaries = useMemo(() => {
+    const done = new Set(
+      (progress[openingId]?.completed ?? []).filter((id) => leafIds.has(id)),
+    );
+    return getLeaves(tree).map((leaf, i) => ({
+      id: leaf.id,
+      name: leaf.endsLines[0] ?? `Line ${i + 1}`,
+      completed: done.has(leaf.id),
+    }));
+  }, [tree, leafIds, progress, openingId]);
+
   // A summary of every opening for the sidebar navigation (name, side, and how
   // many of its lines have been completed).
   const openingSummaries = useMemo(
@@ -271,9 +289,11 @@ export function useTrainer() {
     // configuration
     openings: OPENINGS,
     openingSummaries,
+    lineSummaries,
     opening,
     openingId,
     totalLines,
+    targetLeafId: state.targetLeafId,
 
     // raw state
     state,
@@ -311,6 +331,7 @@ export function useTrainer() {
     reveal,
     doNextLine,
     doResetLine,
+    selectLine: doSelectLine,
     restart,
     resetProgress,
     selectOpening,

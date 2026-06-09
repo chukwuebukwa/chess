@@ -333,6 +333,30 @@ export function nextLine(tree: MoveNode, state: EngineState): EngineState {
   return base;
 }
 
+/** Jump directly to a specific line by its leaf id, ignoring queue order. */
+export function selectLine(
+  tree: MoveNode,
+  state: EngineState,
+  leafId: string,
+): EngineState {
+  const queueIndex = state.leafQueue.indexOf(leafId);
+  if (queueIndex === -1) return state;
+  const base: EngineState = {
+    ...state,
+    queueIndex,
+    targetLeafId: leafId,
+    currentId: tree.id,
+    lastMove: null,
+    feedback: null,
+    feedbackSquare: null,
+    attempts: 0,
+    hintLevel: 0,
+    decisionTainted: false,
+  };
+  base.phase = computePhase(tree, letterFor(state.side), leafId);
+  return base;
+}
+
 /** Restart the current line from move one, keeping the target and statistics. */
 export function resetLine(tree: MoveNode, state: EngineState): EngineState {
   const base: EngineState = {
