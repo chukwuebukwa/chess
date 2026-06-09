@@ -58,9 +58,8 @@ describe('App integration', () => {
 
     // Switch to the Italian so the trainee (White) is to move immediately,
     // avoiding the opponent's reply timer.
-    const select = screen.getByRole('combobox') as HTMLSelectElement;
     act(() => {
-      fireEvent.change(select, { target: { value: 'italian-game' } });
+      fireEvent.click(screen.getByRole('button', { name: /Italian Game/i }));
     });
     expect(latestOptions?.boardOrientation).toBe('white');
 
@@ -84,9 +83,8 @@ describe('App integration', () => {
 
   it('rejects an off-book first move', () => {
     render(<App />);
-    const select = screen.getByRole('combobox') as HTMLSelectElement;
     act(() => {
-      fireEvent.change(select, { target: { value: 'italian-game' } });
+      fireEvent.click(screen.getByRole('button', { name: /Italian Game/i }));
     });
 
     const startFen = latestOptions!.position;

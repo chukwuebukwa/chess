@@ -6,7 +6,6 @@ export function SidePanel({ trainer }: { trainer: Trainer }) {
     state,
     mode,
     interactive,
-    targetName,
     comment,
     line,
     breadcrumb,
@@ -31,10 +30,9 @@ export function SidePanel({ trainer }: { trainer: Trainer }) {
   return (
     <aside className="panel">
       <section className="panel-card">
-        <div className="line-heading">
-          <span className="line-eyebrow">{mode === 'drill' ? 'Drilling' : 'Studying'}</span>
-          <h2 className="line-name">{targetName || 'Opening'}</h2>
-        </div>
+        <span className="line-eyebrow">
+          {mode === 'drill' ? 'Drilling this line' : 'Studying this line'}
+        </span>
 
         <div className="action-grid">
           <button

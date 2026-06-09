@@ -252,9 +252,25 @@ export function useTrainer() {
     leafIds.has(id),
   );
 
+  // A summary of every opening for the sidebar navigation (name, side, and how
+  // many of its lines have been completed).
+  const openingSummaries = useMemo(
+    () =>
+      OPENINGS.map((o) => {
+        const t = buildTree(o.lines);
+        const leaves = new Set(getLeaves(t).map((l) => l.id));
+        const completed = (progress[o.id]?.completed ?? []).filter((id) =>
+          leaves.has(id),
+        ).length;
+        return { id: o.id, name: o.name, side: o.side, total: leaves.size, completed };
+      }),
+    [progress],
+  );
+
   return {
     // configuration
     openings: OPENINGS,
+    openingSummaries,
     opening,
     openingId,
     totalLines,

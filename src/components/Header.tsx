@@ -1,13 +1,11 @@
 import type { Trainer } from '../hooks/useTrainer';
 
-export function OpeningBar({ trainer }: { trainer: Trainer }) {
+export function Header({ trainer }: { trainer: Trainer }) {
   const {
-    openings,
-    openingId,
     opening,
+    targetName,
     mode,
     randomizeOpponent,
-    selectOpening,
     setMode,
     setRandomize,
     restart,
@@ -17,32 +15,15 @@ export function OpeningBar({ trainer }: { trainer: Trainer }) {
 
   return (
     <header className="topbar">
-      <div className="brand">
-        <span className="brand-mark" aria-hidden>
-          ♞
+      <div className="title-block">
+        <h1 className="opening-title">{opening.name}</h1>
+        {targetName && <span className="variation-chip">{targetName}</span>}
+        <span className={`side-badge side-${opening.side}`}>
+          You play {opening.side === 'white' ? 'White' : 'Black'}
         </span>
-        <div>
-          <h1 className="brand-title">Opening Trainer</h1>
-          <p className="brand-sub">Drill openings and their variations, move by move.</p>
-        </div>
       </div>
 
       <div className="controls-bar">
-        <label className="field">
-          <span className="field-label">Opening</span>
-          <select
-            className="select"
-            value={openingId}
-            onChange={(e) => selectOpening(e.target.value)}
-          >
-            {openings.map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.name} ({o.side === 'white' ? 'White' : 'Black'})
-              </option>
-            ))}
-          </select>
-        </label>
-
         <div className="field">
           <span className="field-label">Mode</span>
           <div className="segmented" role="group" aria-label="Training mode">
