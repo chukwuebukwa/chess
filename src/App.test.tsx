@@ -130,4 +130,22 @@ describe('App integration', () => {
     expect(stored).toHaveLength(1);
     expect(stored[0].id).toBe('my-line');
   });
+
+  it('groups openings by colour and filters them via search', () => {
+    render(<App />);
+
+    // Both colour groups are present as collapsible headers.
+    expect(screen.getByRole('button', { name: /^Black/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^White/ })).toBeTruthy();
+
+    const search = screen.getByPlaceholderText(/search openings/i);
+    act(() => {
+      fireEvent.change(search, { target: { value: 'sicilian' } });
+    });
+
+    // Only matching openings remain; non-matches (and empty groups) disappear.
+    expect(screen.getByRole('button', { name: /Sicilian Defense/i })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /Italian Game/i })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Caro-Kann/i })).toBeNull();
+  });
 });

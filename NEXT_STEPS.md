@@ -61,13 +61,15 @@ Author real repertoires now that PGN paste makes it fast. Candidates:
 
 The flat list and bundle-everything approach break down around a few dozen items.
 
-- [ ] **Group openings** by side (White / Black), or by first move / ECO family,
-      with collapsible sections.
-- [ ] **Search / filter** box at the top of the sidebar.
+- [x] **Group openings** by side (White / Black) with collapsible sections.
+- [x] **Search / filter** box at the top of the sidebar (empty groups hide;
+      groups auto-expand while searching).
+- [x] **Progress at the group level** — each colour shows its combined
+      lines-completed count.
 - [ ] **Lazy-load** each opening's lines (dynamic `import()`) so the initial
       bundle stays small as the library grows.
-- [ ] **Progress at the group level** — show "12 / 40 lines" per category.
 - [ ] Virtualize the list if it ever gets very long.
+- [ ] Sub-group by ECO family / first move once a colour has many openings.
 
 ---
 

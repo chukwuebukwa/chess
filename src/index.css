@@ -70,7 +70,7 @@ a:hover {
   padding: 22px 16px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   position: sticky;
   top: 0;
   align-self: flex-start;
@@ -247,6 +247,88 @@ a:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: rgba(245, 165, 0, 0.06);
+}
+
+/* ---------- Sidebar search + groups ---------- */
+.sidebar-search {
+  padding: 0 2px;
+}
+.search-input {
+  width: 100%;
+  height: 34px;
+  padding: 0 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+}
+.search-input:focus-visible {
+  outline: 2px solid var(--blue);
+}
+.sidebar-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 -6px;
+  padding: 2px 6px;
+}
+.opening-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.group-header:disabled {
+  cursor: default;
+}
+.group-caret {
+  font-size: 10px;
+  width: 10px;
+  display: inline-block;
+}
+.group-title {
+  flex: 1;
+  text-align: left;
+}
+.group-progress {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-weight: 600;
+}
+.custom-tag {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  border: 1px solid rgba(245, 165, 0, 0.4);
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.sidebar-empty {
+  color: var(--muted);
+  font-size: 13px;
+  padding: 8px;
+  margin: 0;
 }
 
 /* ---------- Modal / import dialog ---------- */
