@@ -203,6 +203,194 @@ a:hover {
   color: var(--muted);
 }
 
+/* ---------- Custom openings (delete + import) ---------- */
+.opening-li {
+  position: relative;
+}
+.opening-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+.opening-li:hover .opening-delete {
+  opacity: 1;
+}
+.opening-delete:hover {
+  background: rgba(229, 86, 74, 0.18);
+  color: var(--bad);
+}
+.import-btn {
+  margin-top: auto;
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 11px 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.import-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245, 165, 0, 0.06);
+}
+
+/* ---------- Modal / import dialog ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(5, 8, 12, 0.66);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal {
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  padding: 22px 24px;
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.modal-title {
+  margin: 0;
+  font-size: 19px;
+}
+.modal-x {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.modal-x:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+.modal-hint {
+  margin: 8px 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.modal-hint code,
+.preview-muted code {
+  background: var(--panel-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.modal-fields {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.modal-field {
+  flex: 1 1 200px;
+}
+.input {
+  height: 38px;
+  padding: 0 12px;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+.input:focus-visible,
+.pgn-input:focus-visible {
+  outline: 2px solid var(--blue);
+}
+.pgn-input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.modal-preview {
+  min-height: 44px;
+  margin: 14px 0 4px;
+  padding: 10px 12px;
+  background: var(--panel-2);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.preview-muted {
+  color: var(--muted);
+}
+.preview-ok {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.preview-badge {
+  color: #7ee29a;
+  font-weight: 700;
+}
+.preview-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.preview-chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.preview-error {
+  color: #ff9b91;
+  font-weight: 600;
+}
+.modal-error {
+  margin: 10px 0 0;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
 /* ---------- Side badge ---------- */
 .side-badge {
   font-size: 10px;

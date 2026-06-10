@@ -1,6 +1,11 @@
 import type { Trainer } from '../hooks/useTrainer';
 
-export function Sidebar({ trainer }: { trainer: Trainer }) {
+interface SidebarProps {
+  trainer: Trainer;
+  onImport: () => void;
+}
+
+export function Sidebar({ trainer, onImport }: SidebarProps) {
   const {
     openingSummaries,
     openingId,
@@ -8,6 +13,7 @@ export function Sidebar({ trainer }: { trainer: Trainer }) {
     lineSummaries,
     targetLeafId,
     selectLine,
+    deleteOpening,
   } = trainer;
 
   return (
@@ -29,7 +35,7 @@ export function Sidebar({ trainer }: { trainer: Trainer }) {
             const active = o.id === openingId;
             const done = o.completed >= o.total && o.total > 0;
             return (
-              <li key={o.id}>
+              <li key={o.id} className="opening-li">
                 <button
                   type="button"
                   className={active ? 'opening-item active' : 'opening-item'}
@@ -47,6 +53,25 @@ export function Sidebar({ trainer }: { trainer: Trainer }) {
                     {o.completed}/{o.total} lines
                   </span>
                 </button>
+
+                {o.custom && (
+                  <button
+                    type="button"
+                    className="opening-delete"
+                    title="Delete this imported opening"
+                    aria-label={`Delete ${o.name}`}
+                    onClick={() => {
+                      if (
+                        typeof window === 'undefined' ||
+                        window.confirm(`Delete imported opening "${o.name}"?`)
+                      ) {
+                        deleteOpening(o.id);
+                      }
+                    }}
+                  >
+                    ✕
+                  </button>
+                )}
 
                 {active && lineSummaries.length > 0 && (
                   <ul className="line-nav" aria-label={`${o.name} lines`}>
@@ -76,7 +101,9 @@ export function Sidebar({ trainer }: { trainer: Trainer }) {
         </ul>
       </div>
 
-      <p className="sidebar-foot">More openings coming soon.</p>
+      <button type="button" className="import-btn" onClick={onImport}>
+        ＋ Import from PGN
+      </button>
     </nav>
   );
 }

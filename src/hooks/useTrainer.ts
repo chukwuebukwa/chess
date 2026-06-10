@@ -7,10 +7,13 @@ import type {
   SquareHandlerArgs,
 } from 'react-chessboard';
 import { buildTree, findNode, getLeaves } from '../chess/tree';
-import { getOpening, OPENINGS } from '../chess/openings';
+import { OPENINGS } from '../chess/openings';
+import { buildImportedOpening } from '../chess/importOpening';
+import type { Side } from '../chess/types';
 import * as engine from '../chess/engine';
 import type { EngineState, Mode } from '../chess/engine';
 import { useLocalStorage } from './useLocalStorage';
+import { useCustomOpenings } from './useCustomOpenings';
 
 /** How long the book "thinks" before replying, in milliseconds. */
 const OPPONENT_DELAY_MS = 450;
@@ -48,8 +51,22 @@ function computeStatus(state: EngineState, opponentName: string): Status {
 }
 
 export function useTrainer() {
+  const {
+    customOpenings,
+    addOpening,
+    removeOpening: removeCustomOpening,
+  } = useCustomOpenings();
+  const allOpenings = useMemo(() => [...OPENINGS, ...customOpenings], [customOpenings]);
+  const customIds = useMemo(
+    () => new Set(customOpenings.map((o) => o.id)),
+    [customOpenings],
+  );
+
   const [openingId, setOpeningId] = useState<string>(OPENINGS[0]!.id);
-  const opening = useMemo(() => getOpening(openingId)!, [openingId]);
+  const opening = useMemo(
+    () => allOpenings.find((o) => o.id === openingId) ?? OPENINGS[0]!,
+    [allOpenings, openingId],
+  );
   const tree = useMemo(() => buildTree(opening.lines), [opening]);
   const leafIds = useMemo(() => new Set(getLeaves(tree).map((l) => l.id)), [tree]);
   const totalLines = leafIds.size;
@@ -238,6 +255,40 @@ export function useTrainer() {
     restart();
   }, [openingId, setProgress, restart]);
 
+  /** Import a pasted PGN as a new custom opening, then switch to it. */
+  const importOpening = useCallback(
+    (input: { name: string; side: Side; pgn: string }) => {
+      try {
+        const taken = new Set(allOpenings.map((o) => o.id));
+        const created = buildImportedOpening(input, taken);
+        addOpening(created);
+        setOpeningId(created.id);
+        return { ok: true as const, opening: created };
+      } catch (e) {
+        return {
+          ok: false as const,
+          error: e instanceof Error ? e.message : 'Import failed.',
+        };
+      }
+    },
+    [allOpenings, addOpening],
+  );
+
+  /** Delete a custom opening, drop its saved progress, and fall back to default. */
+  const deleteOpening = useCallback(
+    (id: string) => {
+      removeCustomOpening(id);
+      setProgress((prev) => {
+        if (!(id in prev)) return prev;
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+      setOpeningId((cur) => (cur === id ? OPENINGS[0]!.id : cur));
+    },
+    [removeCustomOpening, setProgress],
+  );
+
   // --- Derived values for the view ----------------------------------------
 
   const node = engine.currentNode(tree, state);
@@ -274,20 +325,27 @@ export function useTrainer() {
   // many of its lines have been completed).
   const openingSummaries = useMemo(
     () =>
-      OPENINGS.map((o) => {
+      allOpenings.map((o) => {
         const t = buildTree(o.lines);
         const leaves = new Set(getLeaves(t).map((l) => l.id));
         const completed = (progress[o.id]?.completed ?? []).filter((id) =>
           leaves.has(id),
         ).length;
-        return { id: o.id, name: o.name, side: o.side, total: leaves.size, completed };
+        return {
+          id: o.id,
+          name: o.name,
+          side: o.side,
+          total: leaves.size,
+          completed,
+          custom: customIds.has(o.id),
+        };
       }),
-    [progress],
+    [progress, allOpenings, customIds],
   );
 
   return {
     // configuration
-    openings: OPENINGS,
+    openings: allOpenings,
     openingSummaries,
     lineSummaries,
     opening,
@@ -337,6 +395,8 @@ export function useTrainer() {
     selectOpening,
     setMode,
     setRandomize,
+    importOpening,
+    deleteOpening,
   };
 }
 

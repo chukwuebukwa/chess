@@ -1,16 +1,25 @@
+import { useState } from 'react';
 import { useTrainer } from './hooks/useTrainer';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { TrainerBoard } from './components/TrainerBoard';
 import { SidePanel } from './components/SidePanel';
+import { ImportDialog } from './components/ImportDialog';
 
 export function App() {
   const trainer = useTrainer();
   const { status, opening } = trainer;
+  const [importing, setImporting] = useState(false);
 
   return (
     <div className="app">
-      <Sidebar trainer={trainer} />
+      <Sidebar trainer={trainer} onImport={() => setImporting(true)} />
+
+      <ImportDialog
+        open={importing}
+        onClose={() => setImporting(false)}
+        trainer={trainer}
+      />
 
       <div className="main">
         <Header trainer={trainer} />
