@@ -47,15 +47,21 @@ a lot of practice material. Parser core is done — remaining work is exposing i
 
 ## 2. More openings (authored content)
 
-Author real repertoires now that PGN paste makes it fast. Candidates:
+**Shipped: 20 built-in repertoires** across both colours, every line carrying an
+ECO code and a teaching note, all validated by the test suite.
 
-- [ ] White: Ruy Lopez, Queen's Gambit, London System, Vienna.
-- [ ] Black vs 1.e4: Sicilian (Najdorf/Accelerated), French, Scandinavian.
-- [ ] Black vs 1.d4: King's Indian, Nimzo-Indian, QGD, Slav.
-- [ ] Add an `eco` + `comment` to each line for teaching value (model exists in
-      `caroKann.ts`).
-- [ ] Consider a shared-prefix authoring helper so the common trunk isn't retyped
-      across every line in a file.
+- White: Italian, Ruy Lopez, Scotch, Vienna, King's Gambit, Queen's Gambit,
+  Catalan, London, English.
+- Black: Caro-Kann, Sicilian, French, Scandinavian, Pirc, Petroff, Alekhine,
+  King's Indian, Nimzo-Indian, Grünfeld, Dutch.
+
+Still to add:
+
+- [ ] More depth per opening (more variations, longer main lines).
+- [ ] Remaining big systems: Slav & QGD from Black's side, Queen's Indian,
+      Benoni/Benko, Modern, Philidor; anti-Sicilians (Alapin, Closed) for White.
+- [ ] A shared-prefix authoring helper so the common trunk isn't retyped across
+      every line in a file.
 
 ## 3. Sidebar at scale (UI for dozens of openings)
 
