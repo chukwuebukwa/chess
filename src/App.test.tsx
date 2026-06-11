@@ -101,4 +101,33 @@ describe('App integration', () => {
     expect(latestOptions!.position).toBe(startFen); // board unchanged
     expect(screen.getByText(/try again/i)).toBeTruthy();
   });
+
+  it('imports a pasted PGN as a new custom opening', () => {
+    render(<App />);
+
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: /Import from PGN/i }));
+    });
+
+    const [nameInput, pgnInput] = screen.getAllByRole('textbox');
+    act(() => {
+      fireEvent.change(nameInput!, { target: { value: 'My Line' } });
+      fireEvent.change(pgnInput!, { target: { value: '1. e4 e5 2. Nf3 Nc6' } });
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole('button', { name: /Import opening/i }));
+    });
+
+    // The dialog closes, the new opening is selected (header) and listed (sidebar).
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getAllByText('My Line').length).toBeGreaterThanOrEqual(1);
+
+    // And it is persisted to localStorage so it survives a reload.
+    const stored = JSON.parse(
+      localStorage.getItem('opening-trainer:custom-openings') ?? '[]',
+    );
+    expect(stored).toHaveLength(1);
+    expect(stored[0].id).toBe('my-line');
+  });
 });

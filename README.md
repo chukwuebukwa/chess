@@ -17,8 +17,13 @@ board.
 - **Repertoire as a tree.** Author each variation as a simple list of moves;
   shared move orders automatically merge into one tree that branches exactly
   where the theory branches.
-- **Drill either colour.** Ships with a **Caro-Kann** repertoire for Black and
-  an **Italian Game** repertoire for White. The board auto-flips to your side.
+- **Drill either colour.** Ships with nine repertoires — Caro-Kann, Sicilian,
+  French, Scandinavian and King's Indian for Black; Italian, Ruy Lopez, Queen's
+  Gambit and London for White. The board auto-flips to your side.
+- **Import from PGN.** Paste any PGN (with `( )` variations) to create your own
+  drillable opening — every move validated, lines named by their divergence
+  move, and saved to `localStorage`. Or convert a `.pgn` file to a committed
+  opening module with `npm run pgn:convert`.
 - **Learn vs. Drill modes.** *Learn* shows the whole line and the move-to-play
   arrow as you go; *Drill* hides everything and tests your recall.
 - **Smart feedback.** Correct moves flash green and the book replies; off-book
@@ -48,6 +53,9 @@ npm run preview    # serve the production build
 npm run test       # run the test suite once
 npm run test:watch # watch mode
 npm run typecheck  # tsc --noEmit
+
+# Convert a PGN file into a committed opening module:
+npm run pgn:convert -- path/to/lines.pgn --name "French Defense" --side black
 ```
 
 Requires Node 20+ (developed on Node 22).

@@ -31,18 +31,19 @@ The content model already scales well:
 The world publishes chess content as PGN; importing it is the cheapest way to add
 a lot of practice material. Parser core is done — remaining work is exposing it.
 
-- [ ] **In-app PGN paste box** — a panel where you paste a PGN, give it a name +
-      side, and it becomes a drillable opening. Highest-leverage item: turns
-      "add content" from a code change into a paste.
-- [ ] **Persist imported openings** — store custom openings in `localStorage`
-      (reuse the `useLocalStorage` hook) so they survive reloads, and merge them
-      into the `OPENINGS` list the sidebar renders.
-- [ ] **Per-line naming on import** — let the importer name lines (or derive names
-      from the divergence move, e.g. "3...Bf5") instead of `Line N`.
-- [ ] **Build-time converter script** — `scripts/pgn-to-opening.ts` to turn a
-      `.pgn` file into a committed opening file, for curated/bundled content.
-- [ ] **Import polish** — show a parse preview (N lines, M moves), surface the
-      `compileLine` error inline when a PGN has an illegal/ambiguous move.
+- [x] **In-app PGN paste box** — `ImportDialog` + `useTrainer.importOpening`: paste
+      a PGN, name it, pick a side, and it becomes a drillable opening.
+- [x] **Persist imported openings** — `useCustomOpenings` stores them in
+      `localStorage` (re-validated on load) and merges them into the sidebar list.
+- [x] **Per-line naming on import** — `deriveLineNames` names each line by its
+      divergence move (e.g. "3...Bf5") instead of `Line N`.
+- [x] **Build-time converter script** — `scripts/pgn-to-opening.ts`
+      (`npm run pgn:convert`) turns a `.pgn` file into a committed opening module.
+- [x] **Import polish** — live parse preview (N lines, M moves + line-name chips)
+      with the `compileLine` error surfaced inline.
+- [ ] **Stable per-line ids** — line identity is still the SAN path, so editing a
+      line's moves orphans its saved progress. Give each line a stable id (or
+      content hash) so progress/SRS state survives edits.
 
 ## 2. More openings (authored content)
 
