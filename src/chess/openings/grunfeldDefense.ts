@@ -10,9 +10,9 @@ export const grunfeldDefense: Opening = {
     {
       name: 'Exchange Variation',
       eco: 'D85',
-      moves: ['d4', 'Nf6', 'c4', 'g6', 'Nc3', 'd5', 'cxd5', 'Nxd5', 'e4', 'Nxc3', 'bxc3', 'Bg7'],
+      moves: ['d4', 'Nf6', 'c4', 'g6', 'Nc3', 'd5', 'cxd5', 'Nxd5', 'e4', 'Nxc3', 'bxc3', 'Bg7', 'Nf3', 'c5', 'Rb1', 'O-O', 'Be2', 'cxd4', 'cxd4', 'Qa5+'],
       comment:
-        'The main battleground: let White build the e4/d4 centre, then target it with ...Bg7, ...c5 and ...Qa5.',
+        'The main battleground: hammer d4 with ...c5 and ...cxd4, then ...Qa5+ picks up the initiative against White’s big-but-loose centre.',
     },
     {
       name: 'Russian System',

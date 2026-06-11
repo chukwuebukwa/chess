@@ -331,6 +331,42 @@ a:hover {
   margin: 0;
 }
 
+/* ---------- Spaced-repetition indicators ---------- */
+.due-badge {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ffb74d;
+  background: rgba(245, 165, 0, 0.14);
+  border: 1px solid rgba(245, 165, 0, 0.4);
+  border-radius: 999px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+.line-item-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.line-due {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #ffb74d;
+}
+.line-when {
+  font-size: 10px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.due-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 /* ---------- Modal / import dialog ---------- */
 .modal-backdrop {
   position: fixed;

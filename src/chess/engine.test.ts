@@ -182,3 +182,62 @@ describe('engine — randomised opponent', () => {
     expect(state.completedLeaves.length).toBeGreaterThanOrEqual(1);
   });
 });
+
+describe('engine — per-line mistakes (for spaced repetition)', () => {
+  const tree = buildTree(caroKann.lines);
+
+  it('a cleanly drilled line finishes with zero mistakes', () => {
+    const state = playLineCorrectly(tree, initState(tree, caroKann));
+    expect(state.phase).toBe('lineComplete');
+    expect(state.lineMistakes).toBe(0);
+  });
+
+  it('wrong tries, hints, and reveals each mark the line as missed', () => {
+    let state = initState(tree, caroKann);
+    state = applyOpponentMove(tree, state); // 1.e4
+    state = attemptUserMove(tree, state, 'e7', 'e5').state; // wrong
+    state = attemptUserMove(tree, state, 'c7', 'c6').state; // then correct
+    expect(state.lineMistakes).toBe(1);
+
+    state = applyOpponentMove(tree, state); // 2.d4
+    state = bumpHint(state);
+    state = attemptUserMove(tree, state, 'd7', 'd5').state; // correct but hinted
+    expect(state.lineMistakes).toBe(2);
+
+    state = applyOpponentMove(tree, state); // White's 3rd
+    state = revealMove(tree, state); // revealed
+    expect(state.lineMistakes).toBe(3);
+  });
+
+  it('resets the counter when a new line starts', () => {
+    let state = initState(tree, caroKann);
+    state = applyOpponentMove(tree, state);
+    state = attemptUserMove(tree, state, 'e7', 'e5').state; // wrong
+    expect(state.lineMistakes).toBe(0); // unresolved decisions don't count yet
+    state = attemptUserMove(tree, state, 'c7', 'c6').state;
+    expect(state.lineMistakes).toBe(1);
+    expect(resetLine(tree, state).lineMistakes).toBe(0);
+    expect(nextLine(tree, state).lineMistakes).toBe(0);
+  });
+});
+
+describe('engine — custom leaf order', () => {
+  const tree = buildTree(caroKann.lines);
+  const naturalQueue = initState(tree, caroKann).leafQueue;
+
+  it('drills leaves in the supplied order', () => {
+    const reversed = [...naturalQueue].reverse();
+    const state = initState(tree, caroKann, { leafOrder: reversed });
+    expect(state.leafQueue).toEqual(reversed);
+    expect(state.targetLeafId).toBe(reversed[0]);
+  });
+
+  it('ignores unknown ids and appends missing leaves', () => {
+    const state = initState(tree, caroKann, {
+      leafOrder: ['not-a-leaf', naturalQueue[2]!],
+    });
+    expect(state.leafQueue[0]).toBe(naturalQueue[2]);
+    expect(state.leafQueue).toHaveLength(naturalQueue.length);
+    expect(new Set(state.leafQueue)).toEqual(new Set(naturalQueue));
+  });
+});

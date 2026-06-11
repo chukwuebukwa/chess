@@ -17,9 +17,9 @@ export const englishOpening: Opening = {
     {
       name: 'Reversed Sicilian',
       eco: 'A29',
-      moves: ['c4', 'e5', 'Nc3', 'Nf6', 'Nf3', 'Nc6', 'g3', 'd5', 'cxd5', 'Nxd5', 'Bg2'],
+      moves: ['c4', 'e5', 'Nc3', 'Nf6', 'Nf3', 'Nc6', 'g3', 'd5', 'cxd5', 'Nxd5', 'Bg2', 'Nb6', 'O-O', 'Be7', 'd3', 'O-O', 'a3', 'Be6', 'b4'],
       comment:
-        'Treat 1...e5 as a Sicilian Dragon a tempo up: fianchetto and pressure the centre from g2.',
+        'A Dragon a tempo up: castle, then roll the queenside with a3 and b4 — the standard plan that plays itself for many moves.',
     },
     {
       name: 'Anglo-Indian',

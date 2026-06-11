@@ -10,9 +10,9 @@ export const londonSystem: Opening = {
     {
       name: 'Main Line',
       eco: 'D02',
-      moves: ['d4', 'd5', 'Bf4', 'Nf6', 'e3', 'e6', 'Nf3', 'c5', 'c3', 'Nc6', 'Nbd2'],
+      moves: ['d4', 'd5', 'Bf4', 'Nf6', 'e3', 'e6', 'Nf3', 'c5', 'c3', 'Nc6', 'Nbd2', 'Bd6', 'Bg3', 'O-O', 'Bd3'],
       comment:
-        'The London pyramid (d4/e3/Bf4). Meet ...c5 with c3 and Nbd2, keeping a rock-solid structure and the bishop on f4.',
+        'The London pyramid (d4/e3/Bf4). When Black offers the trade with ...Bd6, slide back to g3 — recapturing with the h-pawn would open your rook file anyway.',
     },
     {
       name: 'vs King’s Indian Setup',

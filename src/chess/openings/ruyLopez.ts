@@ -10,9 +10,9 @@ export const ruyLopez: Opening = {
     {
       name: 'Closed Main Line',
       eco: 'C84',
-      moves: ['e4', 'e5', 'Nf3', 'Nc6', 'Bb5', 'a6', 'Ba4', 'Nf6', 'O-O', 'Be7', 'Re1', 'b5', 'Bb3', 'd6', 'c3', 'O-O', 'h3'],
+      moves: ['e4', 'e5', 'Nf3', 'Nc6', 'Bb5', 'a6', 'Ba4', 'Nf6', 'O-O', 'Be7', 'Re1', 'b5', 'Bb3', 'd6', 'c3', 'O-O', 'h3', 'Na5', 'Bc2', 'c5', 'd4'],
       comment:
-        'The classical Spanish: castle, retreat the bishop to b3, and prepare the c3–d4 centre while h3 stops ...Bg4.',
+        'The classical Spanish through the Chigorin tabiya: h3 stops ...Bg4, the bishop drops back to c2, and d4 finally claims the full centre.',
     },
     {
       name: 'Berlin Defense',

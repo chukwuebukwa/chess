@@ -15,9 +15,9 @@ export const italianGame: Opening = {
     {
       name: 'Giuoco Pianissimo',
       eco: 'C50',
-      moves: ['e4', 'e5', 'Nf3', 'Nc6', 'Bc4', 'Bc5', 'c3', 'Nf6', 'd3', 'd6', 'O-O'],
+      moves: ['e4', 'e5', 'Nf3', 'Nc6', 'Bc4', 'Bc5', 'c3', 'Nf6', 'd3', 'd6', 'O-O', 'a6', 'Re1', 'Ba7', 'h3', 'O-O', 'Nbd2'],
       comment:
-        'The modern main line: build slowly with c3 and d3, then castle. The plan is Re1, Nbd2-f1-g3 and a later d4 break.',
+        'The modern main line: build slowly with c3 and d3, castle, then h3 and Nbd2-f1-g3 with a later d4 break — the plan that carries dozens of moves.',
     },
     {
       name: 'Two Knights Defense',
