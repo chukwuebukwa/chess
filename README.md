@@ -17,9 +17,11 @@ board.
 - **Repertoire as a tree.** Author each variation as a simple list of moves;
   shared move orders automatically merge into one tree that branches exactly
   where the theory branches.
-- **Drill either colour.** Ships with nine repertoires — Caro-Kann, Sicilian,
-  French, Scandinavian and King's Indian for Black; Italian, Ruy Lopez, Queen's
-  Gambit and London for White. The board auto-flips to your side.
+- **Drill either colour.** Ships with **20 repertoires** across both colours —
+  Caro-Kann, Sicilian, French, Pirc, Petroff, Nimzo-Indian, Grünfeld and Dutch
+  (and more) for Black; Italian, Ruy Lopez, Scotch, Vienna, King's Gambit,
+  Queen's Gambit, Catalan, London and English for White. The board auto-flips to
+  your side.
 - **Import from PGN.** Paste any PGN (with `( )` variations) to create your own
   drillable opening — every move validated, lines named by their divergence
   move, and saved to `localStorage`. Or convert a `.pgn` file to a committed
