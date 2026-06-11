@@ -10,9 +10,9 @@ export const petroffDefense: Opening = {
     {
       name: 'Classical Variation',
       eco: 'C42',
-      moves: ['e4', 'e5', 'Nf3', 'Nf6', 'Nxe5', 'd6', 'Nf3', 'Nxe4', 'd4', 'd5', 'Bd3', 'Nc6'],
+      moves: ['e4', 'e5', 'Nf3', 'Nf6', 'Nxe5', 'd6', 'Nf3', 'Nxe4', 'd4', 'd5', 'Bd3', 'Nc6', 'O-O', 'Be7', 'c4', 'Nb4', 'Be2', 'O-O'],
       comment:
-        'Kick the knight with ...d6 first, then recapture on e4 and develop classically with ...d5 and ...Nc6.',
+        'The full classical tabiya: when c4 hits d5, ...Nb4 harasses the d3-bishop before you castle into a famously resilient position.',
     },
     {
       name: 'Nimzowitsch Attack',

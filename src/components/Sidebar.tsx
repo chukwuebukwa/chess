@@ -62,6 +62,7 @@ export function Sidebar({ trainer, onImport }: SidebarProps) {
           <span className="opening-item-progress">
             {done && <span className="done-check" aria-hidden>✓</span>}
             {o.completed}/{o.total} lines
+            {o.due > 0 && <span className="due-badge">{o.due} due</span>}
           </span>
         </button>
 
@@ -97,7 +98,16 @@ export function Sidebar({ trainer, onImport }: SidebarProps) {
                     onClick={() => selectLine(line.id)}
                   >
                     <span className="line-item-name">{line.name}</span>
-                    {line.completed && <span className="done-check" aria-hidden>✓</span>}
+                    <span className="line-item-meta">
+                      {line.dueState === 'due' ? (
+                        <span className="line-due">due</span>
+                      ) : (
+                        <span className="line-when">{line.dueLabel}</span>
+                      )}
+                      {line.completed && (
+                        <span className="done-check" aria-hidden>✓</span>
+                      )}
+                    </span>
                   </button>
                 </li>
               );

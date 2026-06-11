@@ -10,9 +10,9 @@ export const kingsIndianDefense: Opening = {
     {
       name: 'Classical Variation',
       eco: 'E97',
-      moves: ['d4', 'Nf6', 'c4', 'g6', 'Nc3', 'Bg7', 'e4', 'd6', 'Nf3', 'O-O', 'Be2', 'e5'],
+      moves: ['d4', 'Nf6', 'c4', 'g6', 'Nc3', 'Bg7', 'e4', 'd6', 'Nf3', 'O-O', 'Be2', 'e5', 'O-O', 'Nc6', 'd5', 'Ne7'],
       comment:
-        'Let White build the big centre, then hit it with ...e5: White plays on the queenside, Black storms the kingside.',
+        'The Mar del Plata: after d5 Ne7 the play forks — White attacks with c5 on the queenside while Black storms the king with ...f5-f4 and ...g5.',
     },
     {
       name: 'Fianchetto Variation',

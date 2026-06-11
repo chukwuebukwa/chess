@@ -10,9 +10,9 @@ export const catalan: Opening = {
     {
       name: 'Open Catalan',
       eco: 'E04',
-      moves: ['d4', 'Nf6', 'c4', 'e6', 'g3', 'd5', 'Bg2', 'dxc4', 'Nf3'],
+      moves: ['d4', 'Nf6', 'c4', 'e6', 'g3', 'd5', 'Bg2', 'dxc4', 'Nf3', 'a6', 'O-O', 'Nc6', 'e3', 'Bd7', 'Qe2'],
       comment:
-        'When Black takes on c4, don’t rush to recover it — Nf3 and a later Qa4/Ne5 round up the pawn with interest.',
+        'When Black takes on c4 and digs in with ...a6/...Nc6, calmly castle and play e3/Qe2 — the pawn comes back with a lasting pull.',
     },
     {
       name: 'Closed Catalan',

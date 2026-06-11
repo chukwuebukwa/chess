@@ -11,6 +11,7 @@ export function SidePanel({ trainer }: { trainer: Trainer }) {
     breadcrumb,
     totalLines,
     completedCount,
+    dueCount,
     accuracyPct,
     streak,
     bestStreak,
@@ -96,6 +97,12 @@ export function SidePanel({ trainer }: { trainer: Trainer }) {
             {completedCount} / {totalLines} lines
           </span>
         </div>
+
+        <p className="due-note">
+          {dueCount > 0
+            ? `${dueCount} ${dueCount === 1 ? 'line is' : 'lines are'} due for review — drill mode trains those first.`
+            : 'No reviews due. Drill new lines to grow the schedule.'}
+        </p>
 
         <div className="stat-row">
           <div className="stat">

@@ -36,9 +36,9 @@ export const caroKann: Opening = {
     {
       name: 'Classical Main Line',
       eco: 'B19',
-      moves: ['e4', 'c6', 'd4', 'd5', 'Nc3', 'dxe4', 'Nxe4', 'Bf5', 'Ng3', 'Bg6', 'h4', 'h6', 'Nf3', 'Nd7'],
+      moves: ['e4', 'c6', 'd4', 'd5', 'Nc3', 'dxe4', 'Nxe4', 'Bf5', 'Ng3', 'Bg6', 'h4', 'h6', 'Nf3', 'Nd7', 'h5', 'Bh7', 'Bd3', 'Bxd3', 'Qxd3', 'e6'],
       comment:
-        'The classical ...Bf5 setup: trade on e4, develop the bishop to its best diagonal, and meet h4-h5 with ...h6 to keep the bishop on g6.',
+        'The classical ...Bf5 setup: trade the light-squared bishop off on d3, then build the rock-solid ...e6/...Ngf6 wall — Black’s position has no weaknesses.',
     },
     {
       name: 'Two Knights Attack',

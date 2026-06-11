@@ -10,9 +10,9 @@ export const queensGambit: Opening = {
     {
       name: 'Queen’s Gambit Declined',
       eco: 'D37',
-      moves: ['d4', 'd5', 'c4', 'e6', 'Nc3', 'Nf6', 'Bg5', 'Be7', 'e3', 'O-O', 'Nf3'],
+      moves: ['d4', 'd5', 'c4', 'e6', 'Nc3', 'Nf6', 'Bg5', 'Be7', 'e3', 'O-O', 'Nf3', 'Nbd7', 'Rc1', 'c6', 'Bd3'],
       comment:
-        'The most solid reply for Black; White pins with Bg5 and develops harmoniously for a small, durable space edge.',
+        'The classical main line: pin with Bg5, post the rook on c1 against ...c5/...dxc4 ideas, and develop the bishop to d3 last.',
     },
     {
       name: 'Slav Defense',

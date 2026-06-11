@@ -8,11 +8,18 @@ export const frenchDefense: Opening = {
   description: 'A resilient, counter-attacking answer to 1.e4 built on ...e6 and ...d5.',
   lines: [
     {
-      name: 'Winawer Variation',
+      name: 'Winawer: Poisoned Pawn',
       eco: 'C18',
-      moves: ['e4', 'e6', 'd4', 'd5', 'Nc3', 'Bb4', 'e5', 'c5', 'a3', 'Bxc3+', 'bxc3', 'Ne7'],
+      moves: ['e4', 'e6', 'd4', 'd5', 'Nc3', 'Bb4', 'e5', 'c5', 'a3', 'Bxc3+', 'bxc3', 'Ne7', 'Qg4', 'Qc7', 'Qxg7', 'Rg8', 'Qxh7', 'cxd4'],
       comment:
-        'Pin the c3-knight and trade it off, handing White doubled c-pawns to target while you play on the queenside.',
+        'The critical main line: let White grab g7 and h7 — your play down the g-file and against the loose white king is full compensation.',
+    },
+    {
+      name: 'Winawer: 7.Nf3',
+      eco: 'C18',
+      moves: ['e4', 'e6', 'd4', 'd5', 'Nc3', 'Bb4', 'e5', 'c5', 'a3', 'Bxc3+', 'bxc3', 'Ne7', 'Nf3', 'Qa5'],
+      comment:
+        'Against the quieter 7.Nf3, hit the doubled c-pawns immediately with ...Qa5 before deciding on ...Nbc6 or ...Bd7-a4.',
     },
     {
       name: 'Classical Variation',
@@ -34,6 +41,13 @@ export const frenchDefense: Opening = {
       moves: ['e4', 'e6', 'd4', 'd5', 'Nd2', 'c5', 'exd5', 'exd5', 'Ngf3', 'Nc6'],
       comment:
         'Against the flexible Nd2, free your game immediately with ...c5 and accept an isolated d-pawn for active pieces.',
+    },
+    {
+      name: 'Exchange Variation',
+      eco: 'C01',
+      moves: ['e4', 'e6', 'd4', 'd5', 'exd5', 'exd5', 'Nf3', 'Nf6', 'Bd3', 'Bd6'],
+      comment:
+        'The symmetric exchange is no draw offer: develop actively (...Bd6, ...O-O, ...Bg4) and play for the initiative on equal structure.',
     },
   ],
 };

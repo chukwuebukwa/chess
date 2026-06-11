@@ -10,6 +10,10 @@ Built with [chess.js](https://github.com/jhlywa/chess.js) for the rules and
 [react-chessboard](https://github.com/Clariity/react-chessboard) (v5) for the
 board.
 
+**▶ Practice now: <https://chukwuebukwa.github.io/chess/>** — deployed
+automatically from `main` on every push (works great on a phone, and your
+progress/review schedule persists in the browser).
+
 ---
 
 ## Features
@@ -17,11 +21,17 @@ board.
 - **Repertoire as a tree.** Author each variation as a simple list of moves;
   shared move orders automatically merge into one tree that branches exactly
   where the theory branches.
-- **Drill either colour.** Ships with **20 repertoires** across both colours —
-  Caro-Kann, Sicilian, French, Pirc, Petroff, Nimzo-Indian, Grünfeld and Dutch
-  (and more) for Black; Italian, Ruy Lopez, Scotch, Vienna, King's Gambit,
-  Queen's Gambit, Catalan, London and English for White. The board auto-flips to
-  your side.
+- **Spaced repetition.** Every completed line is graded (clean = pass; any
+  wrong try, hint or reveal = fail) and scheduled SM-2 style — 1d → 3d → 7d,
+  growing to 60d, with failures coming straight back. Drill mode always trains
+  **overdue lines first, then new, then upcoming**, and the sidebar shows
+  what's due where.
+- **Drill either colour.** Ships with **22 repertoires** across both colours —
+  Caro-Kann, Sicilian (incl. the anti-Sicilians), French, Pirc, Petroff, QGD,
+  Nimzo- & Queen's Indian, Grünfeld and Dutch (and more) for Black; Italian,
+  Ruy Lopez, Scotch, Vienna, King's Gambit, Queen's Gambit, Catalan, London and
+  English for White. Main lines run to real prep depth (8–10 full moves). The
+  board auto-flips to your side.
 - **Import from PGN.** Paste any PGN (with `( )` variations) to create your own
   drillable opening — every move validated, lines named by their divergence
   move, and saved to `localStorage`. Or convert a `.pgn` file to a committed
@@ -35,8 +45,8 @@ board.
 - **Shuffle the opponent.** Optionally randomise which of the opponent's tries
   you face, so you can't just memorise one move order.
 - **Drag or click to move**, exactly as in the react-chessboard examples.
-- **Progress that sticks.** Completed lines, accuracy, and best streak are saved
-  to `localStorage` per opening.
+- **Progress that sticks.** Completed lines, accuracy, best streak, and the
+  full review schedule are saved to `localStorage` per opening.
 
 ---
 

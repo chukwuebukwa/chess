@@ -9,6 +9,14 @@ import type {
 import { buildTree, findNode, getLeaves } from '../chess/tree';
 import { OPENINGS } from '../chess/openings';
 import { buildImportedOpening } from '../chess/importOpening';
+import {
+  countDue,
+  dueLabel,
+  dueState,
+  gradeLine,
+  orderLeavesForReview,
+} from '../chess/srs';
+import type { ReviewMap } from '../chess/srs';
 import type { Side } from '../chess/types';
 import * as engine from '../chess/engine';
 import type { EngineState, Mode } from '../chess/engine';
@@ -18,6 +26,10 @@ import { useCustomOpenings } from './useCustomOpenings';
 /** How long the book "thinks" before replying, in milliseconds. */
 const OPPONENT_DELAY_MS = 450;
 const PROGRESS_KEY = 'opening-trainer:progress';
+const SRS_KEY = 'opening-trainer:srs';
+
+/** Review records for every opening, keyed by opening id then leaf id. */
+type SrsMap = Record<string, ReviewMap>;
 
 export interface ProgressRecord {
   completed: string[];
@@ -71,9 +83,42 @@ export function useTrainer() {
   const leafIds = useMemo(() => new Set(getLeaves(tree).map((l) => l.id)), [tree]);
   const totalLines = leafIds.size;
 
-  const [state, setState] = useState<EngineState>(() =>
-    engine.initState(tree, opening),
+  const [srs, setSrs] = useLocalStorage<SrsMap>(SRS_KEY, {});
+  const srsRef = useRef(srs);
+  useEffect(() => {
+    srsRef.current = srs;
+  }, [srs]);
+
+  /**
+   * Build a fresh session. In drill mode the queue is ordered by spaced
+   * repetition (overdue lines first, then new, then future-scheduled) so a
+   * session always trains the weakest material first; learn mode keeps the
+   * systematic tree order.
+   */
+  const makeSession = useCallback(
+    (mode: Mode, randomizeOpponent: boolean): EngineState => {
+      const leafOrder =
+        mode === 'drill'
+          ? orderLeavesForReview(
+              getLeaves(tree).map((l) => l.id),
+              srsRef.current[opening.id] ?? {},
+              Date.now(),
+            )
+          : undefined;
+      return engine.initState(tree, opening, { mode, randomizeOpponent, leafOrder });
+    },
+    [tree, opening],
   );
+
+  const [state, setState] = useState<EngineState>(() => {
+    const records = srs[opening.id] ?? {};
+    const leafOrder = orderLeavesForReview(
+      getLeaves(tree).map((l) => l.id),
+      records,
+      Date.now(),
+    );
+    return engine.initState(tree, opening, { leafOrder });
+  });
   const [selected, setSelected] = useState<Square | null>(null);
   const [progress, setProgress] = useLocalStorage<ProgressMap>(PROGRESS_KEY, {});
 
@@ -95,14 +140,9 @@ export function useTrainer() {
       mounted.current = true;
       return;
     }
-    setState((prev) =>
-      engine.initState(tree, opening, {
-        mode: prev.mode,
-        randomizeOpponent: prev.randomizeOpponent,
-      }),
-    );
+    setState((prev) => makeSession(prev.mode, prev.randomizeOpponent));
     setSelected(null);
-  }, [tree, opening]);
+  }, [tree, opening, makeSession]);
 
   // The book auto-replies after a short, human-feeling delay.
   useEffect(() => {
@@ -155,6 +195,30 @@ export function useTrainer() {
       return { ...prev, [openingId]: { completed, bestStreak } };
     });
   }, [state.phase, state.completedLeaves, state.bestStreak, openingId, setProgress]);
+
+  // Grade a line into the spaced-repetition schedule the moment it completes.
+  // A transition guard (rather than a "seen" set) means replaying a line
+  // re-grades it, while React StrictMode's double-run of effects grades once.
+  const prevPhaseRef = useRef<EngineState['phase'] | null>(null);
+  useEffect(() => {
+    const prevPhase = prevPhaseRef.current;
+    prevPhaseRef.current = state.phase;
+    if (state.phase !== 'lineComplete' || prevPhase === 'lineComplete') return;
+    // At lineComplete the board sits on the reached leaf.
+    const leafId = state.currentId;
+    if (!leafIds.has(leafId)) return;
+    const pass = state.lineMistakes === 0;
+    setSrs((prev) => {
+      const forOpening = prev[openingId] ?? {};
+      return {
+        ...prev,
+        [openingId]: {
+          ...forOpening,
+          [leafId]: gradeLine(forOpening[leafId], pass, Date.now()),
+        },
+      };
+    });
+  }, [state.phase, state.currentId, state.lineMistakes, openingId, leafIds, setSrs]);
 
   // --- Move handlers -------------------------------------------------------
 
@@ -228,14 +292,8 @@ export function useTrainer() {
     [tree],
   );
   const restart = useCallback(
-    () =>
-      setState((prev) =>
-        engine.initState(tree, opening, {
-          mode: prev.mode,
-          randomizeOpponent: prev.randomizeOpponent,
-        }),
-      ),
-    [tree, opening],
+    () => setState((prev) => makeSession(prev.mode, prev.randomizeOpponent)),
+    [makeSession],
   );
   const selectOpening = useCallback((id: string) => setOpeningId(id), []);
   const setMode = useCallback(
@@ -314,34 +372,41 @@ export function useTrainer() {
     const done = new Set(
       (progress[openingId]?.completed ?? []).filter((id) => leafIds.has(id)),
     );
+    const records = srs[openingId] ?? {};
+    const now = Date.now();
     return getLeaves(tree).map((leaf, i) => ({
       id: leaf.id,
       name: leaf.endsLines[0] ?? `Line ${i + 1}`,
       completed: done.has(leaf.id),
+      dueState: dueState(records[leaf.id], now),
+      dueLabel: dueLabel(records[leaf.id], now),
     }));
-  }, [tree, leafIds, progress, openingId]);
+  }, [tree, leafIds, progress, openingId, srs]);
 
   // A summary of every opening for the sidebar navigation (name, side, and how
   // many of its lines have been completed).
-  const openingSummaries = useMemo(
-    () =>
-      allOpenings.map((o) => {
-        const t = buildTree(o.lines);
-        const leaves = new Set(getLeaves(t).map((l) => l.id));
-        const completed = (progress[o.id]?.completed ?? []).filter((id) =>
-          leaves.has(id),
-        ).length;
-        return {
-          id: o.id,
-          name: o.name,
-          side: o.side,
-          total: leaves.size,
-          completed,
-          custom: customIds.has(o.id),
-        };
-      }),
-    [progress, allOpenings, customIds],
-  );
+  const openingSummaries = useMemo(() => {
+    const now = Date.now();
+    return allOpenings.map((o) => {
+      const t = buildTree(o.lines);
+      const leaves = new Set(getLeaves(t).map((l) => l.id));
+      const completed = (progress[o.id]?.completed ?? []).filter((id) =>
+        leaves.has(id),
+      ).length;
+      // "Due" counts only previously-learned lines whose review has arrived;
+      // brand-new lines are conveyed by the completed/total figure instead.
+      const due = countDue(leaves, srs[o.id] ?? {}, now, { includeNew: false });
+      return {
+        id: o.id,
+        name: o.name,
+        side: o.side,
+        total: leaves.size,
+        completed,
+        due,
+        custom: customIds.has(o.id),
+      };
+    });
+  }, [progress, allOpenings, customIds, srs]);
 
   return {
     // configuration
@@ -377,6 +442,9 @@ export function useTrainer() {
     comment: targetNode?.comments[0] ?? '',
     currentPly: node.ply,
     completedCount: completedForOpening.length,
+    dueCount: countDue(leafIds, srs[openingId] ?? {}, Date.now(), {
+      includeNew: false,
+    }),
     accuracyPct: Math.round(engine.accuracy(state) * 100),
     streak: state.streak,
     bestStreak: Math.max(state.bestStreak, progress[openingId]?.bestStreak ?? 0),

@@ -52,6 +52,8 @@ export interface EngineState {
   hintLevel: HintLevel;
   /** Set when a hint, a wrong guess, or a reveal spoils the current decision. */
   decisionTainted: boolean;
+  /** Decisions resolved with a mistake (wrong try / hint / reveal) in the current line. */
+  lineMistakes: number;
 
   // Session statistics
   completedLeaves: string[];
@@ -64,6 +66,12 @@ export interface EngineState {
 export interface InitOptions {
   mode?: Mode;
   randomizeOpponent?: boolean;
+  /**
+   * Optional explicit drill order for the leaf queue (e.g. spaced-repetition
+   * priority). Ids not present in the tree are ignored; tree leaves missing
+   * from the list are appended in natural order, so every line stays reachable.
+   */
+  leafOrder?: string[];
 }
 
 const letterFor = (side: Side): Color => (side === 'white' ? 'w' : 'b');
@@ -107,7 +115,14 @@ export function initState(
   opening: Opening,
   opts: InitOptions = {},
 ): EngineState {
-  const leafQueue = getLeaves(tree).map((l) => l.id);
+  const naturalOrder = getLeaves(tree).map((l) => l.id);
+  let leafQueue = naturalOrder;
+  if (opts.leafOrder) {
+    const valid = new Set(naturalOrder);
+    const ordered = opts.leafOrder.filter((id) => valid.has(id));
+    const seen = new Set(ordered);
+    leafQueue = [...ordered, ...naturalOrder.filter((id) => !seen.has(id))];
+  }
   const targetLeafId = leafQueue[0] ?? '';
   const userLetter = letterFor(opening.side);
 
@@ -127,6 +142,7 @@ export function initState(
     attempts: 0,
     hintLevel: 0,
     decisionTainted: false,
+    lineMistakes: 0,
     completedLeaves: [],
     decisions: 0,
     firstTryCorrect: 0,
@@ -197,7 +213,7 @@ function registerWrong(state: EngineState, from: Square | null): EngineState {
 /** Resolve the current decision into the session statistics. */
 function scoreDecision(state: EngineState): Pick<
   EngineState,
-  'decisions' | 'firstTryCorrect' | 'streak' | 'bestStreak'
+  'decisions' | 'firstTryCorrect' | 'streak' | 'bestStreak' | 'lineMistakes'
 > {
   const success = !state.decisionTainted;
   const streak = success ? state.streak + 1 : 0;
@@ -206,6 +222,7 @@ function scoreDecision(state: EngineState): Pick<
     firstTryCorrect: state.firstTryCorrect + (success ? 1 : 0),
     streak,
     bestStreak: Math.max(state.bestStreak, streak),
+    lineMistakes: state.lineMistakes + (success ? 0 : 1),
   };
 }
 
@@ -328,6 +345,7 @@ export function nextLine(tree: MoveNode, state: EngineState): EngineState {
     attempts: 0,
     hintLevel: 0,
     decisionTainted: false,
+    lineMistakes: 0,
   };
   base.phase = computePhase(tree, letterFor(state.side), targetLeafId);
   return base;
@@ -352,6 +370,7 @@ export function selectLine(
     attempts: 0,
     hintLevel: 0,
     decisionTainted: false,
+    lineMistakes: 0,
   };
   base.phase = computePhase(tree, letterFor(state.side), leafId);
   return base;
@@ -368,6 +387,7 @@ export function resetLine(tree: MoveNode, state: EngineState): EngineState {
     attempts: 0,
     hintLevel: 0,
     decisionTainted: false,
+    lineMistakes: 0,
   };
   base.phase = computePhase(tree, letterFor(state.side), state.targetLeafId);
   return base;

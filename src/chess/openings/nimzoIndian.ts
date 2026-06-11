@@ -10,9 +10,9 @@ export const nimzoIndian: Opening = {
     {
       name: 'Rubinstein Variation',
       eco: 'E46',
-      moves: ['d4', 'Nf6', 'c4', 'e6', 'Nc3', 'Bb4', 'e3', 'O-O', 'Bd3', 'd5', 'Nf3', 'c5'],
+      moves: ['d4', 'Nf6', 'c4', 'e6', 'Nc3', 'Bb4', 'e3', 'O-O', 'Bd3', 'd5', 'Nf3', 'c5', 'O-O', 'cxd4', 'exd4', 'dxc4', 'Bxc4', 'b6'],
       comment:
-        'Against the quiet 4.e3, castle and hit the centre with ...d5 and ...c5 for a classic isolated-pawn fight.',
+        'The Karpov plan: liquidate the centre, then blockade White’s isolated d-pawn with ...Bb7 and ...Nbd7-f6 — a model IQP defence.',
     },
     {
       name: 'Classical Variation',

@@ -9,6 +9,8 @@ import { petroffDefense } from './petroffDefense';
 import { alekhineDefense } from './alekhineDefense';
 import { kingsIndianDefense } from './kingsIndianDefense';
 import { nimzoIndian } from './nimzoIndian';
+import { queensIndian } from './queensIndian';
+import { queensGambitDeclined } from './queensGambitDeclined';
 import { grunfeldDefense } from './grunfeldDefense';
 import { dutchDefense } from './dutchDefense';
 // White
@@ -41,6 +43,8 @@ export const OPENINGS: Opening[] = [
   // Black — vs 1.d4
   kingsIndianDefense,
   nimzoIndian,
+  queensIndian,
+  queensGambitDeclined,
   grunfeldDefense,
   dutchDefense,
   // White
@@ -69,6 +73,8 @@ export {
   alekhineDefense,
   kingsIndianDefense,
   nimzoIndian,
+  queensIndian,
+  queensGambitDeclined,
   grunfeldDefense,
   dutchDefense,
   italianGame,

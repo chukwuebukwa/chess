@@ -79,13 +79,26 @@ The flat list and bundle-everything approach break down around a few dozen items
 
 ---
 
+## Shipped since
+
+- **Spaced repetition** (`src/chess/srs.ts`): per-line SM-2-style scheduling.
+  Completing a line cleanly = pass (1d/3d/7d → ×2.2, capped 60d); any mistake =
+  fail (back in 10 min). Drill mode orders the queue overdue → new → upcoming;
+  due counts surface in the sidebar and panel.
+- **CI + deploy** (`.github/workflows/ci.yml`): tests + build on every PR, and
+  `main` auto-deploys to GitHub Pages.
+- **Deeper mainlines** (8–10 full moves) across the flagship openings, the
+  Najdorf split over 6.Be2/6.Be3/6.Bg5, anti-Sicilians (Alapin, Smith-Morra,
+  Closed, Grand Prix), French Exchange, plus QGD and Queen's Indian for Black
+  (22 openings total).
+
 ## Backlog / not chosen (yet)
 
 - **Tactics & endgame trainers** — a different drill loop than opening recall
   (e.g. "find the best move" from the Lichess puzzle DB). Bigger lift; a second
   content type + mode. Skipped for now.
-- Spaced repetition: resurface lines you've gotten wrong, instead of a fixed queue.
 - Shareable repertoire export (back out to PGN).
+- Cross-opening review session ("train everything due today" in one click).
 
 ## Suggested order
 
